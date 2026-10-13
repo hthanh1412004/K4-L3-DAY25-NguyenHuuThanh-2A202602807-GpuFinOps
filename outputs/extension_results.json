@@ -1,0 +1,172 @@
+{
+  "inference": {
+    "baseline_daily": 48.87,
+    "optimized_daily": 8.9,
+    "baseline_per_m": 6.488,
+    "optimized_per_m": 1.181,
+    "savings_pct": 81.8,
+    "total_tokens": 7533027,
+    "baseline_daily_exact": 48.87416100000006,
+    "optimized_daily_exact": 8.900058594999981,
+    "original_optimized_daily": 8.484622969999995,
+    "stages": [
+      {
+        "stage": "Baseline",
+        "daily_usd": 48.87416100000006,
+        "per_m": 6.487984312282441
+      },
+      {
+        "stage": "Cascade",
+        "daily_usd": 11.475642800000013,
+        "per_m": 1.5233773621148596
+      },
+      {
+        "stage": "Cache + writes",
+        "daily_usd": 10.694623824999976,
+        "per_m": 1.4196980609521215
+      },
+      {
+        "stage": "Batch",
+        "daily_usd": 8.900058594999981,
+        "per_m": 1.181471750333562
+      }
+    ],
+    "cache_scenarios": [
+      {
+        "reads": 1,
+        "daily_usd": 9.6585881,
+        "per_m": 1.2821656022207275
+      },
+      {
+        "reads": 2,
+        "daily_usd": 9.306748315,
+        "per_m": 1.2354593067302162
+      },
+      {
+        "reads": 4,
+        "daily_usd": 8.900058595,
+        "per_m": 1.1814717503335646
+      },
+      {
+        "reads": 10,
+        "daily_usd": 8.65079722,
+        "per_m": 1.148382611664607
+      }
+    ]
+  },
+  "carbon": {
+    "days": 30,
+    "jobs": [
+      {
+        "job_id": "job-train-llm",
+        "gpu_type": "H100",
+        "gpu_hours": 4800.0,
+        "wh": 3360000.0,
+        "before_g": 1276800.0,
+        "after_g": 100800.0,
+        "saved_g": 1176000.0
+      },
+      {
+        "job_id": "job-train-embed",
+        "gpu_type": "A100",
+        "gpu_hours": 1200.0,
+        "wh": 480000.0,
+        "before_g": 182400.0,
+        "after_g": 14400.0,
+        "saved_g": 168000.0
+      },
+      {
+        "job_id": "job-finetune",
+        "gpu_type": "H100",
+        "gpu_hours": 360.0,
+        "wh": 252000.0,
+        "before_g": 95760.0,
+        "after_g": 7560.0,
+        "saved_g": 88200.0
+      },
+      {
+        "job_id": "job-dev-sandbox",
+        "gpu_type": "A10G",
+        "gpu_hours": 480.0,
+        "wh": 72000.0,
+        "before_g": 27360.0,
+        "after_g": 2160.0,
+        "saved_g": 25200.0
+      },
+      {
+        "job_id": "job-batch-eval",
+        "gpu_type": "H100",
+        "gpu_hours": 90.0,
+        "wh": 63000.0,
+        "before_g": 23940.0,
+        "after_g": 1890.0,
+        "saved_g": 22050.0
+      }
+    ],
+    "regions": [
+      {
+        "region": "us-east-1",
+        "usd_per_kwh": 0.12,
+        "g_per_kwh": 380,
+        "electricity_usd": 507.24,
+        "carbon_g": 1606260.0
+      },
+      {
+        "region": "us-west-2",
+        "usd_per_kwh": 0.07,
+        "g_per_kwh": 120,
+        "electricity_usd": 295.89000000000004,
+        "carbon_g": 507240.0
+      },
+      {
+        "region": "europe-north1",
+        "usd_per_kwh": 0.09,
+        "g_per_kwh": 30,
+        "electricity_usd": 380.43,
+        "carbon_g": 126810.0
+      },
+      {
+        "region": "europe-central2",
+        "usd_per_kwh": 0.18,
+        "g_per_kwh": 660,
+        "electricity_usd": 760.86,
+        "carbon_g": 2789820.0
+      },
+      {
+        "region": "us-east-wa",
+        "usd_per_kwh": 0.055,
+        "g_per_kwh": 90,
+        "electricity_usd": 232.485,
+        "carbon_g": 380430.0
+      }
+    ],
+    "total_wh": 4227000.0,
+    "cheapest": "us-east-wa",
+    "cleanest": "europe-north1",
+    "saved_g": 1479450.0
+  },
+  "allocation": {
+    "by_team": {
+      "rag": 1.76,
+      "search": 2.52,
+      "eval": 1.81,
+      "assistant": 2.82
+    },
+    "by_project": {
+      "doc-qa": 1.6,
+      "web-search": 2.29,
+      "nightly-eval": 1.63,
+      "chat": 2.64,
+      "(untagged)": 0.74
+    },
+    "by_team_exact": {
+      "rag": 1.7562822974999992,
+      "search": 2.517908249999997,
+      "eval": 1.8101829174999997,
+      "assistant": 2.815685129999998
+    },
+    "tag_coverage_exact": 0.9179166666666667,
+    "tag_coverage": 0.918,
+    "chargeback_ready": true
+  }
+}

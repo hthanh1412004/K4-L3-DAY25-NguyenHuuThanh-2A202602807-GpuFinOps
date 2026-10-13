@@ -6,9 +6,11 @@ from __future__ import annotations
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 import os
+import json
 from missions._common import num, catalog_by_type, ROOT
 from finops import report, sustainability
 from missions import m1_efficiency_audit, m2_inference_levers, m3_purchasing
+from missions import m4_allocation, carbon_scheduling, lab_report
 
 DAYS = 30
 # one tier down for over-provisioned ("util-lie") GPUs
@@ -22,7 +24,7 @@ def run(verbose: bool = True) -> dict:
     cat = catalog_by_type()
 
     # --- buckets ---
-    infer_savings = (r2["baseline_daily"] - r2["optimized_daily"]) * DAYS
+    infer_savings = (r2["baseline_daily_exact"] - r2["optimized_daily_exact"]) * DAYS
     purchasing_savings = r3["on_demand_monthly"] - r3["optimized_monthly"]
 
     idle_savings = r1["idle_waste_daily"] * DAYS
@@ -39,7 +41,7 @@ def run(verbose: bool = True) -> dict:
         "Right-size util-lies": round(rightsize_savings),
         "Kill idle GPUs": round(idle_savings),
     }
-    baseline = r2["baseline_daily"] * DAYS + r3["on_demand_monthly"]
+    baseline = r2["baseline_daily_exact"] * DAYS + r3["on_demand_monthly"]
     optimized = baseline - sum(levers.values())
     total_pct = sum(levers.values()) / baseline * 100 if baseline else 0.0
 
@@ -50,13 +52,22 @@ def run(verbose: bool = True) -> dict:
         "wh_per_query": wh,
         "carbon_g": sustainability.carbon_g(wh, "us-east-1"),
         "best_region": min(sustainability.REGION_CARBON, key=sustainability.REGION_CARBON.get),
+        "cheapest_region": min(sustainability.REGION_PRICE_KWH, key=sustainability.REGION_PRICE_KWH.get),
     }
 
     md = report.build_report(baseline, optimized, levers, sustainability=sust)
+    r4 = m4_allocation.run(verbose=False)
+    carbon = carbon_scheduling.run(verbose=False)
+    details, writeup = lab_report.analysis(r1, r2, r3, r4, carbon, baseline, optimized, levers)
+    md += "\n\n" + details + "\n"
     out_md = os.path.join(ROOT, "outputs", "report.md")
     os.makedirs(os.path.dirname(out_md), exist_ok=True)
-    with open(out_md, "w") as f:
+    with open(out_md, "w", encoding="utf-8") as f:
         f.write(md)
+    with open(os.path.join(ROOT, "outputs", "writeup.md"), "w", encoding="utf-8") as f:
+        f.write(writeup)
+    with open(os.path.join(ROOT, "outputs", "extension_results.json"), "w", encoding="utf-8") as f:
+        json.dump({"inference": r2, "carbon": carbon, "allocation": r4}, f, indent=2)
     png = report.savings_waterfall(levers, os.path.join(ROOT, "outputs", "savings.png"))
 
     if verbose:

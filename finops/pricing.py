@@ -4,6 +4,33 @@ Figures are June-2026 as-of snapshots from the deck's RESEARCH dossier; treat
 live prices as fast-moving (re-baseline before each cohort).
 """
 from __future__ import annotations
+import math
+
+
+def cache_break_even_reads(write_cost_per_m: float, price_in_per_m: float,
+                           read_discount: float = 0.10) -> float:
+    """Reads per write required to recover the write surcharge (same prefix size).
+
+    price_in_per_m is the effective uncached read price, including batch if used.
+    write_cost_per_m is an additional write fee, not the initial prompt charge.
+    """
+    if not all(math.isfinite(v) for v in (write_cost_per_m, price_in_per_m, read_discount)):
+        raise ValueError("Cache prices and discount must be finite")
+    if write_cost_per_m < 0 or price_in_per_m < 0 or not 0 <= read_discount <= 1:
+        raise ValueError("Invalid cache prices or read discount")
+    saved_per_read = price_in_per_m * (1 - read_discount)
+    if saved_per_read == 0:
+        return math.inf
+    return write_cost_per_m / saved_per_read
+
+
+def cache_is_worth_it(avg_cache_reads: float, write_cost_per_m: float,
+                     read_discount: float = 0.10, price_in_per_m: float = 1.0) -> bool:
+    """Enable cache only when expected read savings cover its write surcharge."""
+    if not math.isfinite(avg_cache_reads) or avg_cache_reads < 0:
+        raise ValueError("Expected reads must be finite and non-negative")
+    return avg_cache_reads > 0 and avg_cache_reads >= cache_break_even_reads(
+        write_cost_per_m, price_in_per_m, read_discount)
 
 
 def request_cost(

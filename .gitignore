@@ -3,3 +3,9 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+.tmp/
+pytest-cache-files-*/
+
+# Supplementary Markdown notes (not submission artifacts)
+/LAB_COMPLETION.md
+LMS.md

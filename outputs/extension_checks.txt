@@ -1,0 +1,11 @@
+test_batch_changes_gate_and_write_is_not_discounted (__main__.ExtensionChecks.test_batch_changes_gate_and_write_is_not_discounted) ... ok
+test_cache_low_high_and_exact_break_even (__main__.ExtensionChecks.test_cache_low_high_and_exact_break_even) ... ok
+test_cache_policy_never_costs_more_than_uncached (__main__.ExtensionChecks.test_cache_policy_never_costs_more_than_uncached) ... ok
+test_carbon_work_energy_and_regions (__main__.ExtensionChecks.test_carbon_work_energy_and_regions) ... ok
+test_invalid_cache_inputs (__main__.ExtensionChecks.test_invalid_cache_inputs) ... ok
+test_m2_m4_reconcile_and_levers_telescope (__main__.ExtensionChecks.test_m2_m4_reconcile_and_levers_telescope) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.115s
+
+OK

@@ -10,9 +10,12 @@ def build_report(baseline_usd: float, optimized_usd: float, levers: dict,
     lines = [
         "# NimbusAI — GPU Cost Optimization Report",
         "",
-        f"**Period:** {period}  ",
-        f"**Baseline spend:** ${baseline_usd:,.0f}  ",
-        f"**Optimized spend:** ${optimized_usd:,.0f}  ",
+        f"**Period:** {period}",
+        "",
+        f"**Baseline spend:** ${baseline_usd:,.0f}",
+        "",
+        f"**Optimized spend:** ${optimized_usd:,.0f}",
+        "",
         f"**Projected savings:** ${savings:,.0f}  (**{pct:.0f}%**)",
         "",
         "## Savings by lever",
@@ -27,9 +30,10 @@ def build_report(baseline_usd: float, optimized_usd: float, levers: dict,
             "",
             "## Sustainability",
             "",
-            f"- Energy per query: {sustainability.get('wh_per_query', 0):.2f} Wh",
-            f"- Carbon per query: {sustainability.get('carbon_g', 0):.3f} gCO2e",
-            f"- Cheapest+cleanest region: {sustainability.get('best_region', 'n/a')}",
+            f"- Energy per reference query: {sustainability.get('wh_per_query', 0):.2f} Wh",
+            f"- Carbon per reference query: {sustainability.get('carbon_g', 0):.3f} gCO2e",
+            f"- Cleanest region: {sustainability.get('best_region', 'n/a')}",
+            f"- Cheapest electricity region: {sustainability.get('cheapest_region', 'n/a')}",
         ]
     lines += ["", "_Figures are June-2026 as-of snapshots; re-baseline before acting._"]
     return "\n".join(lines)
@@ -46,7 +50,16 @@ def savings_waterfall(levers: dict, path: str) -> str:
     names = list(levers.keys())
     vals = [levers[n] for n in names]
     fig, ax = plt.subplots(figsize=(8, 4.5))
-    ax.bar(names, vals, color="#2e548a")
+    bottoms = []
+    cumulative = 0
+    for value in vals:
+        bottoms.append(cumulative)
+        cumulative += value
+    bars = ax.bar(names, vals, bottom=bottoms, color="#2e548a")
+    for bar, value, bottom in zip(bars, vals, bottoms):
+        ax.text(bar.get_x() + bar.get_width() / 2, bottom + value / 2,
+                f"${value:,.0f}", ha="center", va="center", color="white", fontsize=9)
+    ax.set_ylim(0, cumulative * 1.12)
     ax.set_ylabel("Savings (USD / month)")
     ax.set_title("GPU cost savings by FinOps lever")
     plt.xticks(rotation=20, ha="right")

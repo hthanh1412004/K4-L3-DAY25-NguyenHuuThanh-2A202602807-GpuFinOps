@@ -1,0 +1,212 @@
+{
+  "m1": {
+    "summary": [
+      {
+        "gpu_id": "gpu-h100-0",
+        "gpu_type": "H100",
+        "gpu_util_pct": 94.4,
+        "mfu": 0.417,
+        "mbu": 0.446,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-h100-1",
+        "gpu_type": "H100",
+        "gpu_util_pct": 95.2,
+        "mfu": 0.408,
+        "mbu": 0.44,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-h100-2",
+        "gpu_type": "H100",
+        "gpu_util_pct": 94.3,
+        "mfu": 0.401,
+        "mbu": 0.423,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-h100-3",
+        "gpu_type": "H100",
+        "gpu_util_pct": 93.1,
+        "mfu": 0.427,
+        "mbu": 0.444,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-h100-4",
+        "gpu_type": "H100",
+        "gpu_util_pct": 98.2,
+        "mfu": 0.194,
+        "mbu": 0.207,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-h100-5",
+        "gpu_type": "H100",
+        "gpu_util_pct": 61.1,
+        "mfu": 0.261,
+        "mbu": 0.271,
+        "idle_hours": 8
+      },
+      {
+        "gpu_id": "gpu-a100-0",
+        "gpu_type": "A100",
+        "gpu_util_pct": 31.4,
+        "mfu": 0.259,
+        "mbu": 0.276,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-a100-1",
+        "gpu_type": "A100",
+        "gpu_util_pct": 28.0,
+        "mfu": 0.236,
+        "mbu": 0.247,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-a10g-0",
+        "gpu_type": "A10G",
+        "gpu_util_pct": 25.0,
+        "mfu": 0.218,
+        "mbu": 0.235,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-a10g-1",
+        "gpu_type": "A10G",
+        "gpu_util_pct": 96.9,
+        "mfu": 0.268,
+        "mbu": 0.302,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-l4-0",
+        "gpu_type": "L4",
+        "gpu_util_pct": 40.0,
+        "mfu": 0.302,
+        "mbu": 0.328,
+        "idle_hours": 0
+      }
+    ],
+    "lies": [
+      {
+        "gpu_id": "gpu-h100-4",
+        "gpu_type": "H100",
+        "gpu_util_pct": 98.2,
+        "mfu": 0.194,
+        "mbu": 0.207,
+        "idle_hours": 0
+      },
+      {
+        "gpu_id": "gpu-a10g-1",
+        "gpu_type": "A10G",
+        "gpu_util_pct": 96.9,
+        "mfu": 0.268,
+        "mbu": 0.302,
+        "idle_hours": 0
+      }
+    ],
+    "idle_waste_daily": 20.0
+  },
+  "m2": {
+    "baseline_daily": 48.87,
+    "optimized_daily": 8.48,
+    "baseline_per_m": 6.488,
+    "optimized_per_m": 1.126,
+    "savings_pct": 82.6,
+    "total_tokens": 7533027
+  },
+  "m3": {
+    "recommendations": [
+      {
+        "job_id": "job-train-llm",
+        "gpu_type": "H100",
+        "tier": "spot",
+        "on_demand": 12000,
+        "optimized": 7596
+      },
+      {
+        "job_id": "job-train-embed",
+        "gpu_type": "A100",
+        "tier": "spot",
+        "on_demand": 2148,
+        "optimized": 1393
+      },
+      {
+        "job_id": "job-finetune",
+        "gpu_type": "H100",
+        "tier": "spot",
+        "on_demand": 900,
+        "optimized": 570
+      },
+      {
+        "job_id": "job-infer-chat",
+        "gpu_type": "A10G",
+        "tier": "reserved",
+        "on_demand": 4320,
+        "optimized": 2592
+      },
+      {
+        "job_id": "job-infer-rag",
+        "gpu_type": "A100",
+        "tier": "reserved",
+        "on_demand": 3866,
+        "optimized": 2160
+      },
+      {
+        "job_id": "job-infer-search",
+        "gpu_type": "L4",
+        "tier": "reserved",
+        "on_demand": 1728,
+        "optimized": 972
+      },
+      {
+        "job_id": "job-dev-sandbox",
+        "gpu_type": "A10G",
+        "tier": "spot",
+        "on_demand": 480,
+        "optimized": 203
+      },
+      {
+        "job_id": "job-batch-eval",
+        "gpu_type": "H100",
+        "tier": "spot",
+        "on_demand": 225,
+        "optimized": 142
+      }
+    ],
+    "on_demand_monthly": 25667,
+    "optimized_monthly": 15627,
+    "savings_pct": 39.1
+  },
+  "m4": {
+    "by_team": {
+      "rag": 1.6,
+      "search": 2.49,
+      "eval": 1.79,
+      "assistant": 2.59
+    },
+    "by_project": {
+      "doc-qa": 1.45,
+      "web-search": 2.27,
+      "nightly-eval": 1.62,
+      "chat": 2.44,
+      "(untagged)": 0.71
+    },
+    "tag_coverage": 0.918,
+    "chargeback_ready": true
+  },
+  "m5": {
+    "baseline_monthly": 27133,
+    "optimized_monthly": 14626,
+    "levers": {
+      "Inference (cascade/cache/batch)": 1212,
+      "Purchasing (spot/reserved)": 10040,
+      "Right-size util-lies": 655,
+      "Kill idle GPUs": 600
+    },
+    "total_savings_pct": 46.1
+  }
+}
